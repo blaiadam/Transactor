@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "build /home/atomflare/Documents/Projects/Transactor/Transactor/Transactor.csproj",
+			"file": "/home/atomflare/Documents/Projects/Transactor/Transactor/Transactor.csproj",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "dotnet: build /home/atomflare/Documents/Projects/Transactor/Transactor/Transactor.csproj",
+		}
+	]
+}

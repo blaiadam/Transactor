@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MyLaunchProfileName": {
+      "commandName": "Project",
+      "commandLineArgs": "/home/atomflare/Documents/Projects/Transactor/Transactions"
+    }
+  }
+}
