@@ -3,10 +3,11 @@ namespace Transactor;
 public class FileController
 {
     #region Private Members
-    private readonly int MaxTransactionListCapacity = 1000; 
+    private readonly int MaxTransactionListCapacity = 1000;
     #endregion
 
-    public bool Read(string folderPath)
+    #region Public Methods
+    public void Read(string folderPath)
     {
         // Get List of Files from Directory
         Console.WriteLine("**** BEGIN READ *****");
@@ -17,10 +18,10 @@ public class FileController
             Console.WriteLine($"No files found in folder: {folderPath}");
             Console.WriteLine("***** EXIT READ *****");
             Console.WriteLine();
-            return false;
+            return;
         }
 
-        // ***** Read Files *****
+        // Read Files
         Console.WriteLine($"Reading files in folder: {folderPath}");
         List<Transaction> transactions = new(MaxTransactionListCapacity);
         string[] lineWords;
@@ -76,8 +77,6 @@ public class FileController
         Console.WriteLine($"Completed reading {transFiles.Length} files");
         Console.WriteLine($"***** END READ *****");
         Console.WriteLine();
-
-        return true;
     }
-
+    #endregion
 }
