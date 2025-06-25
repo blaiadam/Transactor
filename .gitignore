@@ -40,9 +40,7 @@ ScaffoldingReadMe.txt
 ~$*
 *~
 CodeCoverage/
-Transactions/
-sql/
-Global.cs
+transactor.db
 
 # MSBuild Binary and Structured Log
 *.binlog
