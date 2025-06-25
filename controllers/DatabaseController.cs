@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace Transactor;
+namespace Transactor.controllers;
 
 public class DatabaseController
 {
