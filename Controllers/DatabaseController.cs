@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace Transactor.controllers;
+namespace Transactor.Controllers;
 
 public class DatabaseController
 {
@@ -36,6 +36,10 @@ public class DatabaseController
         $Debit, 
         $Credit
     );";
+
+    private readonly string GetCommand = @"SELECT * FROM Transactions";
+
+    private readonly string GetCountCommand = @"SELECT COUNT(*) FROM Transactions";
     #endregion
 
     #region Constructor
@@ -78,6 +82,36 @@ public class DatabaseController
 
             insertCmd.ExecuteNonQuery();
         }
+    }
+
+    public List<Transaction> Get()
+    {
+        using SqliteConnection connection = new(ConnectionString);
+        connection.Open();
+
+        SqliteCommand getCmd = connection.CreateCommand();
+        getCmd.CommandText = GetCountCommand;
+        object? result = getCmd.ExecuteScalar() ?? throw new Exception("Retrieved a null result when attempting to query the number of transactions");
+        long transactionCapacity = (long)result;
+
+        getCmd.CommandText = GetCommand;
+        using SqliteDataReader reader = getCmd.ExecuteReader();
+
+        List<Transaction> transactions = new((int)transactionCapacity);
+        while (reader.Read())
+        {
+            transactions.Add(new Transaction(
+                reader.GetDateTime(1),
+                reader.GetDateTime(2),
+                reader.GetString(3),
+                reader.GetString(4),
+                reader.GetString(5),
+                reader.GetDecimal(6),
+                reader.GetDecimal(7)
+            ));
+        }
+
+        return transactions;
     }
     #endregion
 }

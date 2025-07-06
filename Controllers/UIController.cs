@@ -1,14 +1,17 @@
-namespace Transactor.controllers;
+namespace Transactor.Controllers;
 
 public static class UIController
 {
+    #region Public Properties
     public enum View
     {
         invalid,
         exit,
         list
     }
+    #endregion
 
+    #region Public Methods
     public static void Start()
     {
         string? userInput = "";
@@ -33,7 +36,7 @@ public static class UIController
                 case View.exit:
                     break;
                 case View.list:
-                    Console.WriteLine("Listing your transactions...");
+                    List();
                     break;
                 default:
                     Console.WriteLine("Invalid input");
@@ -42,4 +45,27 @@ public static class UIController
             }
         } while (userCommand != View.exit);
     }
+    #endregion
+
+    #region Private Methods
+    private static void List()
+    {
+        DatabaseController dbController;
+        Console.WriteLine($"***** BEGIN LIST *****");
+
+        dbController = new();
+        List<Transaction> transactions = dbController.Get();
+        if (transactions.Count == 0)
+        {
+            Console.WriteLine("No transactions were retrieved.");
+            return;
+        }
+
+        transactions[0].PrintHeaders();
+        foreach (Transaction transaction in transactions)
+            transaction.Print();
+
+        Console.WriteLine("***** END LIST *****");
+    }
+    #endregion
 }
