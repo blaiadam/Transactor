@@ -1,4 +1,4 @@
-namespace Transactor.controllers;
+namespace Transactor.Controllers;
 
 public class FileController
 {
