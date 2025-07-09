@@ -9,19 +9,16 @@ public class FileController
     #region Public Methods
     public void Read(string folderPath)
     {
-        // Get List of Files from Directory
-        Console.WriteLine("**** BEGIN READ *****");
-
+        // Get list of files from given directory.
+        Console.WriteLine();
         string[] transFiles = Directory.GetFiles(folderPath);
         if (transFiles.Length == 0)
         {
             Console.WriteLine($"No files found in folder: {folderPath}");
-            Console.WriteLine("***** EXIT READ *****");
-            Console.WriteLine();
             return;
         }
 
-        // Read Files
+        // Read files.
         Console.WriteLine($"Reading files in folder: {folderPath}");
         List<Transaction> transactions = new(MaxTransactionListCapacity);
         string[] lineWords;
@@ -33,6 +30,7 @@ public class FileController
         DatabaseController dbController = new();
         foreach (string transFile in transFiles)
         {
+            // Read file
             Console.WriteLine($"Reading from file: {transFile}");
             StreamReader transFileReader = new(transFile);
             transFileReader.ReadLine(); // Read past the headers.
@@ -59,6 +57,7 @@ public class FileController
 
                 if (transactions.Count == MaxTransactionListCapacity)
                 {
+                    // Insert and clear transaction list if at max capacity.
                     dbController.Insert(transactions);
                     transactions = new(MaxTransactionListCapacity);
                 }
@@ -67,6 +66,7 @@ public class FileController
             }
             transFileReader.Close();
 
+            // Insert remaining transactions.
             if (transactions.Count > 0)
             {
                 dbController.Insert(transactions);
@@ -75,8 +75,6 @@ public class FileController
         }
 
         Console.WriteLine($"Completed reading {transFiles.Length} files");
-        Console.WriteLine($"***** END READ *****");
-        Console.WriteLine();
     }
     #endregion
 }

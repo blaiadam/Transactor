@@ -7,6 +7,7 @@ public static class UIController
     {
         invalid,
         exit,
+        read,
         list
     }
     #endregion
@@ -18,22 +19,33 @@ public static class UIController
         View userCommand = View.invalid;
         do
         {
-            Console.WriteLine($"How would you like to view your transactions?{Environment.NewLine}" +
-                              $"Options:{Environment.NewLine}" +
+            Console.WriteLine($"{Environment.NewLine}Type in what actoin you would like to take:{Environment.NewLine}" +
                               $"[{View.exit}] - Close the program{Environment.NewLine}" +
+                              $"[{View.read}] - Read all transactions from a given folder{Environment.NewLine}" +
                               $"[{View.list}] - Show all transactions in a table{Environment.NewLine}");
 
             userInput = Console.ReadLine();
             if (userInput is null || !Enum.TryParse(userInput, out userCommand))
             {
                 Console.WriteLine("Invalid input");
-                Console.WriteLine();
                 continue;
             }
 
             switch (userCommand)
             {
                 case View.exit:
+                    break;
+                case View.read:
+                    Console.WriteLine("Enter the folder to read from: ");
+                    userInput = Console.ReadLine();
+
+                    if (userInput is null || userInput.Length <= 5)
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
+                    
+                    Read(userInput);
                     break;
                 case View.list:
                     List();
@@ -48,10 +60,16 @@ public static class UIController
     #endregion
 
     #region Private Methods
+    private static void Read(string folder)
+    {   
+        FileController fileController = new();
+        fileController.Read(folder);
+    }
+    
     private static void List()
     {
         DatabaseController dbController;
-        Console.WriteLine($"***** BEGIN LIST *****");
+        Console.WriteLine();
 
         dbController = new();
         List<Transaction> transactions = dbController.Get();
@@ -64,8 +82,6 @@ public static class UIController
         transactions[0].PrintHeaders();
         foreach (Transaction transaction in transactions)
             transaction.Print();
-
-        Console.WriteLine("***** END LIST *****");
     }
     #endregion
 }
